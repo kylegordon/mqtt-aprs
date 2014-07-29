@@ -169,15 +169,56 @@ def process_message(msg):
     logging.debug("Processing : " + msg.topic)
     data = json.loads(msg.payload)
     
-    address = APRS_CALLSIGN + '-1>APRS,TCPIP*:'
-    position = "=" + data['lat'] + "/" + data['lon']
+    address = APRS_CALLSIGN + '-3>APRS,TCPIP*:'
+    lat = deg_to_dms(float(data['lat']),0)
+    lon = deg_to_dms(float(data['lon']),1)
+    position = "=" + lat + "/" + lon + "-"
 
     packet = address + position + '\n'
     logging.debug("Packet is %s", packet)
     send_packet(packet)
 
     logging.debug("")
-    
+
+
+def deg_to_dms(deg, long_flag):
+    """
+    Convert degrees to degrees, minutes and seconds
+    Taken from http://stackoverflow.com/questions/2056750/lat-long-to-minutes-and-seconds
+
+    Checked with http://transition.fcc.gov/mb/audio/bickel/DDDMMSS-decimal.html
+
+    For example: 40.058333 in decimal
+    4903.50N is 49 degrees 3 minutes 30 seconds north.
+    """
+    d = int(deg)
+    md = abs(deg - d) * 60
+    m = int(md)
+    sd = (md - m) * 60
+
+    if long_flag:
+        if d > 0:
+            suffix = "E"
+        if d < 0:
+            suffix = "W"
+        #d = str(d).strip('-')
+
+        # Strip the sign, and pad to 3 characters
+        aprsdms = str(d).strip('-').zfill(3) + str(m).zfill(2) + "." + str(int(round(sd,0))) + suffix
+        logging.debug("Computed longitude to be  : %s", aprsdms)
+    else:
+        if d > 0:
+            suffix = "N"
+        if d < 0:
+            suffix = "S"
+
+        # Strip the sign, and pad to 2 characters
+        aprsdms = str(d).strip('-').zfill(2) + str(m).zfill(2) + "." + str(int(round(sd,0))) + suffix
+        logging.debug("Computed latitude to be : %s", aprsdms)
+
+    return aprsdms
+
+ 
 def send_packet(packet):
     """
     Create a socket, log on to the APRS server, and send the packet
