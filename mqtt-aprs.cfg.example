@@ -1,0 +1,10 @@
+[global]
+DEBUG = True
+LOGFILE = /var/log/mqtt-aprs.log
+MQTT_HOST = mqtt.example.com
+MQTT_PORT = 1883
+MQTT_TOPIC = mqttitude/yourname/galaxys2
+APRS_SERVER = second.aprs.net
+APRS_PORT = 20157
+APRS_CALLSIGN = YOURCALLSIGN
+APRS_PASS = YOURAPRS-ISPASS

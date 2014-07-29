@@ -1,0 +1,36 @@
+SUMMARY
+=======
+
+A small daemon to listen for particular MQTT messages from Owntracks, parse the JSON, and relay it to an APRS server
+
+INSTALL
+=======
+
+sudo apt-get install python-mosquitto git python-pip python-simplejson
+
+mkdir /etc/mqtt-aprs/
+git clone git://github.com/kylegordon/mqtt-aprs.git /usr/local/mqtt-aprs/
+cp /usr/local/mqtt-aprs/mqtt-aprs.cfg.example /etc/mqtt-aprs/mqtt-aprs.cfg
+cp /usr/local/mqtt-aprs/mqtt-aprs.init /etc/init.d/mqtt-aprs
+update-rc.d mqtt-aprs defaults
+cp /usr/local/mqtt-aprs/mqtt-aprs.default /etc/default/mqtt-aprs
+## Edit /etc/default/mqtt-aprs, /etc/mqtt-aprs/mqtt-aprs.cfg to suit
+/etc/init.d/mqtt-aprs start
+
+CONFIGURE
+=========
+
+Configuration is stored in /etc/mqtt-aprs/mqtt-aprs.cfg
+Enter your MQTT server hostname and port, and your APRS server, port, callsign, and APRS-IS pass
+
+USE
+===
+
+The client will listen for messages on a particular topic, which carry the owntracks messages in JSON format.
+When a message is recieved, it will attempted to parse it into latitude, longitude, etc, and post it to the APRS server
+
+TODO
+====
+
+Recieve APRS data from APRS server
+Handle multiple APRS callsigns and topics
