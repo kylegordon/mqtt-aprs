@@ -169,16 +169,17 @@ def process_message(msg):
     logging.debug("Processing : " + msg.topic)
     data = json.loads(msg.payload)
     
-    address = APRS_CALLSIGN + '-3>APRS,TCPIP*:'
-    lat = deg_to_dms(float(data['lat']),0)
-    lon = deg_to_dms(float(data['lon']),1)
-    position = "=" + lat + "/" + lon + "-"
+    if data['_type'] == 'location':
+        address = APRS_CALLSIGN + '-3>APRS,TCPIP*:'
+        lat = deg_to_dms(float(data['lat']),0)
+        lon = deg_to_dms(float(data['lon']),1)
+        position = "=" + lat + "/" + lon + "-"
 
-    packet = address + position + '\n'
-    logging.debug("Packet is %s", packet)
-    send_packet(packet)
-
-    logging.debug("")
+        packet = address + position + '\n'
+        logging.debug("Packet is %s", packet)
+        send_packet(packet)
+    else:
+        logging.debug("Not a location message")
 
 
 def deg_to_dms(deg, long_flag):
