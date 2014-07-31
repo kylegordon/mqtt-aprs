@@ -1,2 +1,4 @@
-# myScript usr/bin/
-mqtt-aprs usr/bin
+mqtt-aprs.py usr/bin
+mqtt-aprs.init etc/init.d
+mqtt-aprs.default etc/default
+mqtt-aprs.cfg.example etc/mqtt-aprs
