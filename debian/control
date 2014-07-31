@@ -1,0 +1,18 @@
+Source: mqtt-aprs
+Section: python
+Priority: optional
+Maintainer: Name, <email@address>
+Build-Depends: debhelper (>= 7),
+               python (>= 2.6.6-3~)
+Standards-Version: 3.9.2
+X-Python-Version: >= 2.6
+
+
+Package: mqtt-aprs
+Architecture: all
+Section: python
+Depends: python-appindicator, ${misc:Depends}, ${python:Depends}
+Description: short description
+ A long description goes here.
+ .
+ It can contain multiple paragraphss

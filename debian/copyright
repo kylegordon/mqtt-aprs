@@ -1,0 +1,10 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: myScript
+Upstream-Contact: Name, <email@address>
+
+Files: *
+Copyright: 2011, Name, <email@address>
+License: (GPL-2+ | LGPL-2 | GPL-3 | whatever)
+ Full text of licence.
+ .
+ Unless there is a it can be found in /usr/share/common-licenses
