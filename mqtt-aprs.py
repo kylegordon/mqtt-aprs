@@ -176,7 +176,7 @@ def process_message(msg):
         lon = deg_to_dms(float(data['lon']),1)
         position = "=" + lat + "/" + lon + "-"
 
-        packet = address + position + '\n'
+        packet = address + position + ' mqtt-aprs\n'
         logging.debug("Packet is %s", packet)
         send_packet(packet)
     else:
