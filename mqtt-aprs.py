@@ -171,7 +171,7 @@ def process_message(msg):
     data = json.loads(msg.payload)
     
     if data['_type'] == 'location':
-        address = APRS_CALLSIGN + '-' + APRS_SSID + ">APRS,TCPIP*:'
+        address = APRS_CALLSIGN + '-' + APRS_SSID + '>APRS,TCPIP*:'
         lat = deg_to_dms(float(data['lat']),0)
         lon = deg_to_dms(float(data['lon']),1)
         position = "=" + lat + "/" + lon + "-"
