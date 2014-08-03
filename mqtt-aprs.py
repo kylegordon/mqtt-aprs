@@ -32,6 +32,7 @@ MQTT_TOPIC = config.get("global", "mqtt_topic")
 APRS_SERVER = config.get("global", "aprs_server")
 APRS_PORT = config.getint("global", "aprs_port")
 APRS_CALLSIGN = config.get("global", "aprs_callsign")
+APRS_SSID = config.get("global", "aprs_ssid")
 APRS_PASS = config.get("global", "aprs_pass")
 
 APPNAME = "mqtt-aprs"
@@ -170,7 +171,7 @@ def process_message(msg):
     data = json.loads(msg.payload)
     
     if data['_type'] == 'location':
-        address = APRS_CALLSIGN + '-3>APRS,TCPIP*:'
+        address = APRS_CALLSIGN + '-' + APRS_SSID + ">APRS,TCPIP*:'
         lat = deg_to_dms(float(data['lat']),0)
         lon = deg_to_dms(float(data['lon']),1)
         position = "=" + lat + "/" + lon + "-"

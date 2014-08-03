@@ -1,3 +1,5 @@
+# See http://aprs.org/aprs11/SSIDs.txt for SSID information
+
 [global]
 DEBUG = True
 LOGFILE = /var/log/mqtt-aprs.log
@@ -7,4 +9,5 @@ MQTT_TOPIC = mqttitude/yourname/galaxys2
 APRS_SERVER = second.aprs.net
 APRS_PORT = 20157
 APRS_CALLSIGN = YOURCALLSIGN
+APRS_SSID = STATION_SSID
 APRS_PASS = YOURAPRS-ISPASS
