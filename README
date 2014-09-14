@@ -6,7 +6,7 @@ A small daemon to listen for particular MQTT messages from Owntracks, parse the 
 INSTALL
 =======
 
-sudo apt-get install python-mosquitto git python-pip python-simplejson
+sudo apt-get install python-mosquitto git python-pip python-simplejson python-setproctitle
 
 mkdir /etc/mqtt-aprs/
 git clone git://github.com/kylegordon/mqtt-aprs.git /usr/local/mqtt-aprs/

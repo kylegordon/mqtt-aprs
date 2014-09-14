@@ -15,6 +15,7 @@ import csv
 import mosquitto
 import ConfigParser
 import json
+import setproctitle
 
 from datetime import datetime, timedelta
 
@@ -37,6 +38,7 @@ APRS_PASS = config.get("global", "aprs_pass")
 
 APPNAME = "mqtt-aprs"
 PRESENCETOPIC = "clients/" + socket.getfqdn() + "/" + APPNAME + "/state"
+setproctitle.setproctitle(APPNAME)
 client_id = APPNAME + "_%d" % os.getpid()
 mqttc = mosquitto.Mosquitto(client_id)
 
