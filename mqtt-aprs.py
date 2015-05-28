@@ -194,11 +194,13 @@ def deg_to_dms(deg, long_flag):
 
     For example: 40.058333 in decimal
     4903.50N is 49 degrees 3 minutes 30 seconds north.
+
+    N.B. Seconds not used in APRS, see http://www.aprs.org/doc/APRS101.PDF page 23-24.
     """
     d = int(deg)
     md = abs(deg - d) * 60
     m = int(md)
-    sd = (md - m) * 60
+    hm = int(round((md - m),2) * 100)
 
     if long_flag:
         if d > 0:
@@ -208,7 +210,7 @@ def deg_to_dms(deg, long_flag):
         #d = str(d).strip('-')
 
         # Strip the sign, and pad to 3 characters
-        aprsdms = str(d).strip('-').zfill(3) + str(m).zfill(2) + "." + str(int(round(sd,0))).zfill(2) + suffix
+        aprsdms = str(d).strip('-').zfill(3) + str(m).zfill(2) + "." + str(hm).zfill(2) + suffix
         logging.debug("Computed longitude to be  : %s", aprsdms)
     else:
         if d > 0:
@@ -217,7 +219,7 @@ def deg_to_dms(deg, long_flag):
             suffix = "S"
 
         # Strip the sign, and pad to 2 characters
-        aprsdms = str(d).strip('-').zfill(2) + str(m).zfill(2) + "." + str(int(round(sd,0))).zfill(2) + suffix
+        aprsdms = str(d).strip('-').zfill(2) + str(m).zfill(2) + "." + str(hm).zfill(2) + suffix
         logging.debug("Computed latitude to be : %s", aprsdms)
 
     return aprsdms
