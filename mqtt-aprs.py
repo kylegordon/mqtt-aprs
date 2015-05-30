@@ -29,12 +29,16 @@ LOGFILE = config.get("global", "logfile")
 MQTT_HOST = config.get("global", "mqtt_host")
 MQTT_PORT = config.getint("global", "mqtt_port")
 MQTT_TOPIC = config.get("global", "mqtt_topic")
+MQTT_USER = config.get("global", "mqtt_user")
+MQTT_PASS = config.get("global", "mqtt_pass")
 
 APRS_SERVER = config.get("global", "aprs_server")
 APRS_PORT = config.getint("global", "aprs_port")
 APRS_CALLSIGN = config.get("global", "aprs_callsign")
 APRS_SSID = config.get("global", "aprs_ssid")
 APRS_PASS = config.get("global", "aprs_pass")
+APRS_SYMB = config.get("global", "aprs_symb")
+APRS_TABL = config.get("global", "aprs_tabl")
 
 APPNAME = "mqtt-aprs"
 PRESENCETOPIC = "clients/" + socket.getfqdn() + "/" + APPNAME + "/state"
@@ -176,7 +180,7 @@ def process_message(msg):
         address = APRS_CALLSIGN + '-' + APRS_SSID + '>APRS,TCPIP*:'
         lat = deg_to_dms(float(data['lat']),0)
         lon = deg_to_dms(float(data['lon']),1)
-        position = "=" + lat + "/" + lon + "-"
+        position = "=" + lat + APRS_TABL + lon + APRS_SYMB
 
         packet = address + position + ' mqtt-aprs\n'
         logging.debug("Packet is %s", packet)
@@ -198,9 +202,9 @@ def deg_to_dms(deg, long_flag):
     N.B. Seconds not used in APRS, see http://www.aprs.org/doc/APRS101.PDF page 23-24.
     """
     d = int(deg)
-    md = abs(deg - d) * 60
+    md = round(abs(deg - d) * 60,2)
     m = int(md)
-    hm = int(round((md - m),2) * 100)
+    hm = int((md - m) * 100)
 
     if long_flag:
         if d > 0:
@@ -270,6 +274,7 @@ def connect():
     logging.debug("Connecting to %s:%s", MQTT_HOST, MQTT_PORT)
     # Set the Last Will and Testament (LWT) *before* connecting
     mqttc.will_set(PRESENCETOPIC, "0", qos=0, retain=True)
+    mqttc.username_pw_set(MQTT_USER, MQTT_PASS)
     result = mqttc.connect(MQTT_HOST, MQTT_PORT, 60, True)
     if result != 0:
         logging.info("Connection failed with error code %s. Retrying", result)
