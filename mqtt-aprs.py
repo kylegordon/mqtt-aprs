@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 
-__author__ = "Kyle Gordon"
-__copyright__ = "Copyright (C) Kyle Gordon"
-
 import os
 import logging
 import signal
@@ -18,6 +15,9 @@ import json
 import setproctitle
 
 from datetime import datetime, timedelta
+
+__author__ = "Kyle Gordon"
+__copyright__ = "Copyright (C) Kyle Gordon"
 
 # Read the config file
 config = ConfigParser.RawConfigParser()
@@ -175,11 +175,10 @@ def process_message(msg):
     """
     logging.debug("Processing : " + msg.topic)
     data = json.loads(msg.payload)
-    
     if data['_type'] == 'location':
         address = APRS_CALLSIGN + '-' + APRS_SSID + '>APRS,TCPIP*:'
-        lat = deg_to_dms(float(data['lat']),0)
-        lon = deg_to_dms(float(data['lon']),1)
+        lat = deg_to_dms(float(data['lat']), 0)
+        lon = deg_to_dms(float(data['lon']), 1)
         position = "=" + lat + APRS_TABL + lon + APRS_SYMB
 
         packet = address + position + ' mqtt-aprs\n'
@@ -202,7 +201,7 @@ def deg_to_dms(deg, long_flag):
     N.B. Seconds not used in APRS, see http://www.aprs.org/doc/APRS101.PDF page 23-24.
     """
     d = int(deg)
-    md = round(abs(deg - d) * 60,2)
+    md = round(abs(deg - d) * 60, 2)
     m = int(md)
     hm = int((md - m) * 100)
 
@@ -211,7 +210,7 @@ def deg_to_dms(deg, long_flag):
             suffix = "E"
         if d < 0:
             suffix = "W"
-        #d = str(d).strip('-')
+        # d = str(d).strip('-')
 
         # Strip the sign, and pad to 3 characters
         aprsdms = str(d).strip('-').zfill(3) + str(m).zfill(2) + "." + str(hm).zfill(2) + suffix
@@ -228,7 +227,7 @@ def deg_to_dms(deg, long_flag):
 
     return aprsdms
 
- 
+
 def send_packet(packet):
     """
     Create a socket, log on to the APRS server, and send the packet
@@ -236,17 +235,17 @@ def send_packet(packet):
     logging.debug(APRS_SERVER + ":" + str(APRS_PORT))
     connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connection.connect((APRS_SERVER, APRS_PORT))
-    
+
     # Log on to APRS server
     connection.send('user ' + APRS_CALLSIGN + ' pass ' + APRS_PASS + ' vers "mqtt-zabbix" \n')
-    
+
     # Send APRS packet
     logging.debug("Sending %s", packet)
     connection.send(packet)
-    logging.debug("Sent packet at: " + time.ctime() )
-    
+    logging.debug("Sent packet at: " + time.ctime())
+
     # Close socket -- must be closed to avoidbuffer overflow
-    time.sleep(15) # 15 sec. delay
+    time.sleep(15)  # 15 sec. delay
     connection.shutdown(0)
     connection.close()
 
